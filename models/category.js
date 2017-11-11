@@ -7,6 +7,7 @@ module.exports = function(sequelize, DataTypes){
 				len:[1]
 			}
 		},
+		//safe determines if this is a category we can display to other users as a suggested cartegory. 
 		safe: {
 			type: DataTypes.BOOLEAN
 		}

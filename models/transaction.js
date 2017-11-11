@@ -2,7 +2,7 @@ var moment = require("moment");
 
 module.exports = function(sequelize, DataTypes){
 	var Transaction = sequelize.define("Transaction", {
-		transaction_date: {
+		lent_date: {
 			type: DataTypes.DATE
 			,defaultValue: moment().format('YYYY/MM/DD HH:mm:ss')
 		},
@@ -10,35 +10,24 @@ module.exports = function(sequelize, DataTypes){
 			type: DataTypes.DATE
 			,defaultValue: moment().add(7, 'days').format('YYYY/MM/DD HH:mm:ss')
 		},
-		type:{
-			type: DataTypes.ENUM
-			,values: ['LEND','RETURN']
-			,allowNull: false
+		returned_date: {
+			type: DataTypes.DATE
 		},
-		item_condition: {
+		lent_condition:{
 			type: DataTypes.TEXT
 		},
-		lendee: {
-			type: DataTypes.STRING
+		return_condition: {
+			type: DataTypes.TEXT
 		},
-		//WhoAudit fields below. 
-		modifiedby_user_id:{
-			type:DataTypes.STRING
-			,defaultValue: "root"
-		}//timestamps input automatically by Sequelize. 
-		// created_date:{
-		// },
-		// modified_Date:{
-		// }
+		borrower_rating: {
+			type: DataTypes.INTEGER
+			,validate: { min: 0, max: 5}
+		},
+		lender_rating: {
+			type: DataTypes.INTEGER
+			,validate: { min: 0, max: 5}
+		},
 	});
-
-	// Transaction.associate = function(models){
-	// 	Transaction.belongsTo(models.User, {
-	// 		foreignKey: {
-	// 			allowNull: false
-	// 		}
-	// 	});
-	// }
 
 	Transaction.associate = function(models){
 		Transaction.belongsTo(models.Item, {
@@ -52,7 +41,14 @@ module.exports = function(sequelize, DataTypes){
 			}
 		});
 		Transaction.belongsTo(models.User,{
-			foreignKey: {
+			as: "lender_user"
+			,foreignKey: {
+				allowNull: false
+			}
+		});
+		Transaction.belongsTo(models.User,{
+			as: "borrower_user"
+			,foreignKey: {
 				allowNull: false
 			}
 		});
