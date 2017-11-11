@@ -15,16 +15,7 @@ module.exports = function(sequelize, DataTypes){
 			type: DataTypes.BOOLEAN
 			,allowNull: false
 			,defaultValue: false
-		},
-		//WhoAudit fields below. 
-		modifiedby_user_id:{
-			type:DataTypes.STRING
-			,defaultValue: "root"
-		}//timestamps input automatically by Sequelize. 
-		// created_date:{
-		// },
-		// modified_Date:{
-		// }
+		}
 	});
 
 	Item.associate = function(models){
