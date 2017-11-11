@@ -16,9 +16,9 @@
   "production": {
     "use_env_variable": "DATABASE_URL",
     "username": "azgoi3yjmrjtrl4x",
-    "password": "azgoi3yjmrjtrl4x",
+    "password": "vychweaz75n2k3fq",
     "database": "database_test",
     "host": "ffn96u87j5ogvehy.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    "dialect": "postgres"
+    "dialect": "mysql"
   }
 }
