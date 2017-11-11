@@ -4,23 +4,24 @@ module.exports = function(sequelize, DataTypes){
 			type:DataTypes.STRING
 			,allowNull: false
 			,validate: {
-				len:[5]
+				len:[4]
 			}
-		},//WhoAudit fields below. 
-		modifiedby_user_id:{
-			type:DataTypes.STRING
-			,defaultValue: "root"
-		}//timestamps input automatically by Sequelize. 
-		// created_date:{
-		// },
-		// modified_Date:{
-		// }
+		},
+		nickname:{
+			type: DataTypes.STRING
+			},
+		borrower_rating: {
+			type: DataTypes.DOUBLE
+		},
+		lender_rating:{
+			type: DataTypes.DOUBLE
+		}
 	});
 
 	User.associate = function(models){
 		User.hasMany(models.Item,{});
 		User.hasMany(models.Transaction,{});
-		User.hasMany(models.Category,{});
+		User.belongsToMany(models.Category,{through: "user_category_junction"});
 	}
 
 	return User;

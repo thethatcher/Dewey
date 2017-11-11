@@ -1,10 +1,10 @@
 import React from "react";
-
 import Nav from "./components/Nav";
 
 const App = () => 
   <div>
     <Nav />
+
     <table class="ink-table hover">
   <thead>
     <tr>
@@ -27,6 +27,6 @@ const App = () =>
     </tr>
   </tbody>
 </table>
-  </div>;
+</div>;
 
 export default App;
