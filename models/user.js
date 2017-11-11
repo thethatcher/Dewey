@@ -6,15 +6,7 @@ module.exports = function(sequelize, DataTypes){
 			,validate: {
 				len:[5]
 			}
-		},//WhoAudit fields below. 
-		modifiedby_user_id:{
-			type:DataTypes.STRING
-			,defaultValue: "root"
-		}//timestamps input automatically by Sequelize. 
-		// created_date:{
-		// },
-		// modified_Date:{
-		// }
+		}
 	});
 
 	User.associate = function(models){

@@ -19,6 +19,7 @@ db.sequelize.sync().then(function(){
 	// Start the API server
 	app.listen(PORT, function() {
 	  console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
+	  db.User.create({username:"ryanThatcher"});
 	});	
 })
 	
