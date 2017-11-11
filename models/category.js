@@ -6,25 +6,16 @@ module.exports = function(sequelize, DataTypes){
 			,validate: {
 				len:[1]
 			}
-		},//WhoAudit fields below. 
-		modifiedby_user_id:{
-			type:DataTypes.STRING
-			,defaultValue: "root"
-		}//timestamps input automatically by Sequelize. 
-		// created_date:{
-		// },
-		// modified_Date:{
-		// }
+		},
+		safe: {
+			type: DataTypes.BOOLEAN
+		}
 	});
 
 	Category.associate = function(models){
 		Category.hasMany(models.Item,{});
 		Category.hasMany(models.Transaction);
-		Category.belongsTo(models.User, {
-			foreignKey: {
-				allowNull: false
-			}
-		});
+		Category.belongsToMany(User, {through: "user_category_junction"});
 	}
 
 	return Category;
