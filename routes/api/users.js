@@ -38,12 +38,12 @@ router.route("/items")
 });
 
 router.route("/categories")
-.get(req,res)=>{
+.get((req,res)=>{
 	db.Category.findAll({
 		where:{userId: 1 }//DELTA need to add the dynamic userID variable here. 
 	})
 	.then((dbCategories)=>{res.json(dbCategories);});
-}
+});
 
 //matches requests to /api/users/:id
 router.route("/:id")
