@@ -27,6 +27,24 @@ router.route("/")
 	});
 });
 
+router.route("/items")
+.get((req,res)=>{
+	db.Item.findAll({
+		where: {userId: 1} //DELTA need to add the dynamic userID variable here.
+	})
+	.then((dbItems)=>{
+		res.json(dbItems);
+	});
+});
+
+router.route("/categories")
+.get(req,res)=>{
+	db.Category.findAll({
+		where:{userId: 1 }//DELTA need to add the dynamic userID variable here. 
+	})
+	.then((dbCategories)=>{res.json(dbCategories);});
+}
+
 //matches requests to /api/users/:id
 router.route("/:id")
 .get((req,res) =>{

@@ -15,7 +15,7 @@ router.route("/")
 		,defaults:{safe: null}
 	}).then((dbResult)=>{
 		//adds an association between the returned Category and the user specified to the user_category_junction table.
-		dbResult[0].addUser(2); //TODO replace the '1' with the currently logged in user's ID
+		dbResult[0].addUser(2); //TODO replace the '2' with the currently logged in user's ID
 		res.json(dbResult);
 	});
 });
