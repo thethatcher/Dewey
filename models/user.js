@@ -22,7 +22,6 @@ module.exports = function(sequelize, DataTypes){
 
 	User.associate = function(models){
 		User.hasMany(models.Item,{});
-		User.hasMany(models.Transaction,{});
 		User.hasMany(models.Sessionid, {});
 		User.belongsToMany(models.Category,{through: "user_category_junction"});
 	}
