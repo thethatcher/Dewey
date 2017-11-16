@@ -1,19 +1,16 @@
 import React from "react";
 
 const Nav = () =>
-  <nav class="ink-navigation">
-    <ul class="menu horizontal black">
-        <li class="heading"><a href="#">Dewey</a></li>
-        
+  <nav className="ink-navigation">
+    <ul className="menu horizontal black">
+        <li className="heading"><a href="#">Dewey</a></li>
+        <li ><a href="/Categories">Categories</a></li>
+        <li><a href="/Items">Items</a></li>
+        <li><a href="/Friends">Friends</a></li>
 
-
-
-
-        <li><a href="#">About</a></li>
     </ul>
 </nav>
 
 export default Nav;
 
 
-  

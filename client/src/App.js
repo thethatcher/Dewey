@@ -1,32 +1,21 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Categories from "./pages/Categories";
+
+
 import Nav from "./components/Nav";
 
-const App = () => 
-  <div>
-    <Nav />
-
-    <table class="ink-table hover">
-  <thead>
-    <tr>
-      <th class="align-left">ID</th>
-      <th class="align-left">Name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>John</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Will</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Steve</td>
-    </tr>
-  </tbody>
-</table>
-</div>;
+const App = () =>
+  <Router>
+    <div>
+      <Nav />
+      <Switch>
+        <Route exact path="/" component={Categories} />
+        <Route exact path="/Categories" component={Categories} />
+        <Route exact path="/Categories/:id" component={Categories} />
+        
+      </Switch>
+    </div>
+  </Router>;
 
 export default App;
