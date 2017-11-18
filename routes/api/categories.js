@@ -39,7 +39,21 @@ router.route("/:id")
 	})
 })
 .delete((req,res)=>{
-	res.json({});
+	//disassociate the user with the category. do not delete it completely. 
+	db.Category.findOne({where: {id:req.params.id}})
+	.then((dbResult)=>{
+		console.log(dbResult);
+		db.User.findOne({where:{id:2}}) //DELTA update 2 to be the dynamic userID.
+		.then((dbUser)=>{ 
+			dbResult.removeUser(dbUser)
+			.then((dbResult)=>{res.json(dbResult)});
+		});
+		//delete all items and transactions assocaited to that category.
+		db.Item.destroy({
+			where:{UserId: 2, CategoryId: dbResult.id} //DELTA
+		})
+		.then((destroyResult)=>{res.json(destroyResult);});
+	}); 
 });
 
 router.route("/safe")
