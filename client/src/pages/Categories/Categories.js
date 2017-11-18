@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
-
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Input, TextArea, FormBtn } from "../../components/Form";
+import EditBtn from "../../components/EditBtn";
 import DeleteBtn from "../../components/DeleteBtn";
-import Jumbotron from "../../components/Jumbotron";
-import { Table} from "../../components/Table";
+
 
 
 class Category extends Component {
@@ -58,16 +57,16 @@ class Category extends Component {
     return (
       <Container fluid>
         <Row>
-          <Col size="md-6">
+          <Col size="md-3">
             
-              <h4>Add A New Category</h4>
+              <h5>Add A New Category</h5>
             
             <form>
               <Input
                 value={this.state.name}
                 onChange={this.handleInputChange}
                 name="name"
-                placeholder="Category(required)"
+                placeholder="Add A New Category"
               />
               
               <FormBtn
@@ -77,27 +76,27 @@ class Category extends Component {
                 Add Category
               </FormBtn>
             </form>
-          </Col>
-          <Col size="md-6">
+            <span>        </span>
+
+</Col>
+            <Col size="md-6">
             
-              <h4>Existing Categories</h4>
+              <h5>Existing Categories</h5>
             
             {this.state.category.length ? (
-              <Table>
+              <List>
+              
                 {this.state.category.map(category => (
-                  <div key={category._id}>
-                     <strong>
-                        <tr>
-                        <td>{category.name}</td>
-                        
-                        </tr>
-
-                      </strong>
+                  <ListItem key={category._id}>
+                                             
+                        {category.name}
+                                      
+                    <DeleteBtn onClick={() => this.deleteItems(category._id)} />
                     
-                </div>
+                  </ListItem>
                   
                 ))}
-              </Table>
+              </List>
             ) : (
               <h3>No Results to Display</h3>
             )}
