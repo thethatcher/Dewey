@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes){
 			}
 		},
 		description: {
-			type:DataTypes.TEXT
+			type:DataTypes.STRING
 			,allowNull:true
 		},
 		lent_out: {
@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes){
 		Item.hasMany(models.Transaction,{});
 		Item.belongsTo(models.User, {
 			foreignKey: {
-				allowNull: false
+				allowNull: true
 			}
 		});
 		Item.belongsTo(models.Category, {
