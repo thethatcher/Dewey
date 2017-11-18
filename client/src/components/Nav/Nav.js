@@ -1,19 +1,16 @@
 import React from "react";
 
 const Nav = () =>
-  <nav className="navbar navbar-inverse navbar-top">
-    <div className="container-fluid">
-      <div className="navbar-header">
-        <button type="button" className="collapsed navbar-toggle">
-          <span className="sr-only">Toggle navigation</span>
-          <span className="icon-bar" /> <span className="icon-bar" />
-          <span className="icon-bar" />
-        </button>
-        <a href="/" className="navbar-brand">
-          React Reading List
-        </a>
-      </div>
-    </div>
-  </nav>;
+  <nav className="ink-navigation">
+    <ul className="menu horizontal black">
+        <li className="heading"><a href="#">Dewey</a></li>
+        <li ><a href="/Categories">Categories</a></li>
+        <li><a href="/Items">Items</a></li>
+        <li><a href="/Friends">Friends</a></li>
+
+    </ul>
+</nav>
 
 export default Nav;
+
+

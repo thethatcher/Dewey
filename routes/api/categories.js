@@ -49,4 +49,5 @@ router.route("/safe")
 		res.json(dbResult);
 	});
 });
+
 module.exports = router;
