@@ -8,12 +8,14 @@ import DeleteBtn from "../../components/DeleteBtn";
 
 
 
-
 class Item extends Component {
 	state = {
 		item: [],
 		name: "",
-    description: ""
+    description: "",
+    CategoryId: "",
+    UserId: ""
+
     	};
 
 	componentDidMount() {
@@ -23,7 +25,7 @@ class Item extends Component {
 	loadItems = () => {
 		API.getItems()
 			.then(res =>
-				this.setState({ item: res.data, name: "", description: "", UserID: ""})
+				this.setState({ item: res.data, name: "", description: "", CategoryId: "", UserId: ""})
 				)
 				.catch(err => console.log(err));
 	};
@@ -47,7 +49,8 @@ class Item extends Component {
 			API.saveItems({
 				name: this.state.name,
         description: this.state.description,
-        UserID: 2
+        CategoryId: this.state.CategoryId,
+        UserId:this.state.UserId
 			})
 
 			.then(res => this.loadItems())
@@ -79,6 +82,24 @@ class Item extends Component {
                 name="description"
                 placeholder="Item Description"
               />
+
+              <Input
+                value={this.state.CategoryId}
+                onChange={this.handleInputChange}
+                name="CategoryId"
+                placeholder="2"
+              />
+
+                  <Input
+                value={this.state.UserId}
+                onChange={this.handleInputChange}
+                name="UserId"
+                placeholder="2"
+              />
+
+         
+
+           
                          
               
               <FormBtn
@@ -99,11 +120,11 @@ class Item extends Component {
               <List>
               
                 {this.state.item.map(item => (
-                  <ListItem key={item._id}>
+                  <ListItem key={item.id}>
                                              
                         {item.name} {item.description}
                                       
-                    <EditBtn onClick={() => this.deleteItems(item._id)} />
+                    <EditBtn onClick={() => this.deleteItems(item.id)} />
                     
                   </ListItem>
                   

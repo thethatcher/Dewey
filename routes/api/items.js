@@ -4,7 +4,7 @@ const db = require("../../models");
 router.route("/")
 .get((req,res)=>{
 	db.Item.findAll({
-      where:{UserId: 1} //DELTA UserID will need to be replaced by the variable for the currently logged in user. 
+      where:{UserId: 2} //DELTA UserID will need to be replaced by the variable for the currently logged in user. 
       ,include: [{
         model: db.Transaction
         ,limit: 1
