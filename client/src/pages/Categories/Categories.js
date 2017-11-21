@@ -91,7 +91,7 @@ class Category extends Component {
                                              
                         {category.name}
                                       
-                    <DeleteBtn onClick={() => this.deleteItems(category._id)} />
+                    <DeleteBtn onClick={() => this.deleteCategories(category._id)} />
                     
                   </ListItem>
                   
