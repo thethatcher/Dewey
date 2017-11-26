@@ -16,11 +16,11 @@
 	<!-- Google API Firebase !-->
 	<script src="https://apis.google.com/js/platform.js" async defer></script>
 
-	<!-- javascript !-->
-	<!-- <link rel="stylesheet" type="text/javascript" href="authentication.js"> !-->
+	<!-- jquery !-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
 
 	<!-- Google sign in !-->
-	<meta name="google-signin-client_id" content="972852700444-m3hr01r5fplggkhp8sflv4bcjoj9sbsk.apps.googleusercontent.com">
+	<!-- <meta name="google-signin-client_id" content="972852700444-m3hr01r5fplggkhp8sflv4bcjoj9sbsk.apps.googleusercontent.com"> -->
 
 	<title>Blizzard News</title>
 
@@ -52,8 +52,10 @@
 	<!-- sign up button !-->
 	<button id="btnSignup" class="btn btn-secondary">Sign Up</button>
 
+	<br>
+
 	<!-- Google Sign-in !-->
-	<div class="g-signin2" data-onsuccess="onSignIn"></div>
+	<button type="button" class="btn btn-primary" onclick="signIn();"><i class="fa fa-google-plus"></i> Sign-In With Google</button>
 
 	<!-- hidden logout button !-->
 	<button id="btnLogout" class="btn btn-action hide">Log Out</button>
@@ -62,51 +64,7 @@
 
 </div>
 
-<!-- <script src="https://code.jquery.com/jquery.js"></script> -->
-
-<script>
-
-	// Initialize Firebase
-
-	var config = {
-  		apiKey: "AIzaSyDpABusxDMNturlE9Gh7-QArvTF-thiMrk",
-  		authDomain: "dewey-da807.firebaseapp.com",
-  		databaseURL: "https://dewey-da807.firebaseio.com",
-  		projectId: "dewey-da807",
-  		storageBucket: "dewey-da807.appspot.com",
-  		messagingSenderId: "826253413209"
-	};
-	firebase.initializeApp(config);
-
-	var database = firebase.database();
-	var provider = new firebase.auth.GoogleAuthProvider();
-	var auth = firebase.auth();
-
-	firebase.auth().signInWithPopup(provider).then(function(result) {
-  		// This gives you a Google Access Token. You can 		use it to access the Google API.
-  		var token = result.credential.accessToken;
-  		// The signed-in user info.
-  		var user = result.user;
-  		console.log(user.email);
-  		// ...
-		}).catch(function(error) {
-  		// Handle Errors here.
-  		var errorCode = error.code;
-  		var errorMessage = error.message;
-  		// The email of the user's account used.
-  		var email = error.email;
-  		// The firebase.auth.AuthCredential type that was 		used.
-  		var credential = error.credential;
-  		// ...
-  		}); 
-
-	// firebase.auth().onAuthStateChanged(user => {
-	// 	if(user) {
-	// 		window.location = 'localhost:3001/home';
-	// 	}
-	// });
-
-</script>
+<script src="firebase.js"></script>
 
 </body>
 </html>
