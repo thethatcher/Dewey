@@ -14,7 +14,7 @@ router.route("/")
 		where:{
 			username: req.body.username
 		},
-		defaults:{nickname: req.body.nickname}
+		defaults:{nickname: req.body.username}
 	}).then((dbResults) =>{
 		//if this is true a new user was created. 
 		if (dbResults[1]) {
@@ -30,7 +30,7 @@ router.route("/")
 router.route("/items")
 .get((req,res)=>{
 	db.Item.findAll({
-		where: {userId: 1} //DELTA need to add the dynamic userID variable here.
+		where: {UserUsername: req.params.username} 
 	})
 	.then((dbItems)=>{
 		res.json(dbItems);
@@ -40,16 +40,16 @@ router.route("/items")
 router.route("/categories")
 .get((req,res)=>{
 	db.Category.findAll({
-		where:{userId: 1 }//DELTA need to add the dynamic userID variable here. 
+		where:{UserUsername: req.params.username}
 	})
 	.then((dbCategories)=>{res.json(dbCategories);});
 });
 
-//matches requests to /api/users/:id
-router.route("/:id")
+//matches requests to /api/users/:username
+router.route("/:username")
 .get((req,res) =>{
 	db.User.find({
-		where:{id: req.params.id}
+		where:{username: req.params.username}
 	}).then((dbResults)=>{
 		res.json(dbResults);
 	})
