@@ -10,8 +10,8 @@ export default {
     return axios.get("/api/categories/" + id);
   },
   
-  deleteCategories: function(id) {
-    return axios.delete("/api/categories/" + id);
+  deleteCategories: function(id, username) {
+    return axios.delete("/api/categories/" + id, {username: username});
   },
   
   saveCategories: function(categoryData) {

@@ -19,15 +19,15 @@ class Category extends Component {
 	}
 
 	loadCategories = () => {
-		API.getCategories()
+		API.getCategories(sessionStorage.username)
 			.then(res =>
 				this.setState({ category: res.data, name: ""})
 				)
 				.catch(err => console.log(err));
 	};
 
-  deleteCategories = id => {
-    API.deleteCategories(id)
+  deleteCategories = (id) => {
+    API.deleteCategories(id, sessionStorage.username)
       .then(res => this.loadCategories())
       .catch(err => console.log(err));
   };
@@ -88,11 +88,11 @@ class Category extends Component {
               <List>
               
                 {this.state.category.map(category => (
-                  <ListItem key={category._id}>
+                  <ListItem key={category.id}>
                                              
                         {category.name}
                                       
-                    <DeleteBtn onClick={() => this.deleteItems(category._id)} />
+                    <DeleteBtn onClick={() => this.deleteCategories(category.id)} />
                     
                   </ListItem>
                   
