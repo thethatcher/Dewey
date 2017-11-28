@@ -37,23 +37,19 @@ router.route("/:id")
 		dbResult[0].addUser(req.body.username); //TODO DELTA replace the '2' with the currently logged in user's ID
 		res.json(dbResult);
 	})
-})
+});
+
+router.route("/:id/:username")
 .delete((req,res)=>{
 	//disassociate the user with the category. do not delete it completely. 
 	db.Category.findOne({where: {id:req.params.id}})
-	.then((dbResult)=>{
-		db.User.findOne({where:{username: req.body.username}}) //DELTA update 2 to be the dynamic userID.
-		.then((dbUser)=>{ 
-			dbResult.removeUser(dbUser)
-			.then((dbResult)=>{res.json(dbResult)});
+	.then((dbCategory)=>{
+		db.User.findOne({where:{username: req.params.username}}).then((dbUser)=>{
+			dbCategory.removeUser(dbUser);
 		});
-		//delete all items and transactions assocaited to that category.
-		db.Item.destroy({
-			where:{UserUsername: req.body.username, CategoryId: dbResult.id} //DELTA
-		})
-		.then((destroyResult)=>{res.json(destroyResult);});
 	}); 
 });
+
 
 router.route("/safe")
 .get((req,res)=>{

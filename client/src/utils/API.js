@@ -11,7 +11,7 @@ export default {
   },
   
   deleteCategories: function(id, username) {
-    return axios.delete("/api/categories/" + id, {username: username});
+    return axios.delete("/api/categories/" + id + "/" + username);
   },
   
   saveCategories: function(categoryData) {
