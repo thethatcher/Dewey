@@ -44,6 +44,7 @@ class Category extends Component {
 		if (this.state.name) {
 			API.saveCategories({
 				name: this.state.name
+        ,username: sessionStorage.username
 			})
 
 			.then(res => this.loadCategories())

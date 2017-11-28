@@ -15,7 +15,7 @@ router.route("/")
 		where:{name: req.body.name}
 		,defaults:{safe: null}
 	}).then((dbResult)=>{
-		dbResult[0].addUser(2); //TODO DELTA replace the '2' with the currently logged in user's ID
+		dbResult[0].addUser(req.body.username); //TODO DELTA replace the '2' with the currently logged in user's ID
 		res.json(dbResult);
 	});
 });
@@ -34,7 +34,7 @@ router.route("/:id")
 		,defaults:{safe: null}
 	}).then((dbResult)=>{
 		//adds an association between the returned Category and the user specified to the user_category_junction table.
-		dbResult[0].addUser(2); //TODO DELTA replace the '2' with the currently logged in user's ID
+		dbResult[0].addUser(req.body.username); //TODO DELTA replace the '2' with the currently logged in user's ID
 		res.json(dbResult);
 	})
 })
@@ -43,7 +43,7 @@ router.route("/:id")
 	db.Category.findOne({where: {id:req.params.id}})
 	.then((dbResult)=>{
 		console.log(dbResult);
-		db.User.findOne({where:{id:2}}) //DELTA update 2 to be the dynamic userID.
+		db.User.findOne({where:{UserUsername: req.body.username}}) //DELTA update 2 to be the dynamic userID.
 		.then((dbUser)=>{ 
 			dbResult.removeUser(dbUser)
 			.then((dbResult)=>{res.json(dbResult)});

@@ -37,10 +37,10 @@ router.route("/items")
 	});
 });
 
-router.route("/categories")
+router.route("/categories/:username")
 .get((req,res)=>{
 	db.Category.findAll({
-		where:{UserUsername: req.params.username}
+		include:[{model:db.User, where:{username: req.params.username}}]
 	})
 	.then((dbCategories)=>{res.json(dbCategories);});
 });

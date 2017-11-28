@@ -2,8 +2,8 @@ import axios from "axios";
 
 export default {
   
-  getCategories: function() {
-    return axios.get("/api/categories");
+  getCategories: function(username) {
+    return axios.get("/api/users/categories/" + username);
   },
  
   getCategory: function(id) {
@@ -15,6 +15,7 @@ export default {
   },
   
   saveCategories: function(categoryData) {
+    console.log(categoryData.username);
     return axios.post("/api/categories", categoryData);
   },
   
