@@ -21,8 +21,8 @@ export default {
   
 
 
-  getItems: function() {
-    return axios.get("/api/items");
+  getItems: function(username) {
+    return axios.get("/api/users/items/" + username);
   },
  
   getItem: function(id) {

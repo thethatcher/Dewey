@@ -27,7 +27,7 @@ router.route("/")
 	});
 });
 
-router.route("/items")
+router.route("/items/:username")
 .get((req,res)=>{
 	db.Item.findAll({
 		where: {UserUsername: req.params.username} 
