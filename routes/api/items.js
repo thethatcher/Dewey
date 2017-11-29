@@ -2,9 +2,10 @@ const router = require("express").Router();
 const db = require("../../models");
 
 router.route("/")
+//the get route for items is deprecated by the /users/items/:username route.
 .get((req,res)=>{
 	db.Item.findAll({
-      where:{UserId: 1} //DELTA UserID will need to be replaced by the variable for the currently logged in user. 
+      where:{UserUsername: req.params.username} 
       ,include: [{
         model: db.Transaction
         ,limit: 1
@@ -64,32 +65,9 @@ router.route("/:id")
     where:{id: req.params.id}
     ,values: req.body
   });
-});
-
-router.route("/")
-.get((req,res)=>{
-	db.Item.findAll({})
-	.then((dbResult)=>{
-		res.json(dbResult);
-	});
 })
-.post((req,res)=>{
-	db.Item.findOrCreate({
-		where:{name: req.body.name}
-		,defaults:{safe: null}
-	}).then((dbResult)=>{
-		dbResult[0].addUser(2); //TODO replace the '1' with the currently logged in user's ID
-		res.json(dbResult);
-	});
+.delete((req, res)=>{
+  dbItem.destroy({where:{id: req.params.id}})
 });
-
-router.route("/safe")
-.get((req,res)=>{
-	db.Item.findAll({where: {safe: true}})
-	.then((dbResult)=>{
-		res.json(dbResult);
-	});
-});
-
 
 module.exports = router;

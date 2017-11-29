@@ -21,7 +21,7 @@ class Item extends Component {
 	}
 
 	loadItems = () => {
-		API.getItems()
+		API.getItems(sessionStorage.username)
 			.then(res =>
 				this.setState({ item: res.data, name: "", description: "", UserID: ""})
 				)
@@ -47,7 +47,7 @@ class Item extends Component {
 			API.saveItems({
 				name: this.state.name,
         description: this.state.description,
-        UserID: 2
+        UserUsername: sessionStorage.username
 			})
 
 			.then(res => this.loadItems())
