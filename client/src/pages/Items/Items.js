@@ -38,6 +38,7 @@ class Item extends Component {
         if(res.data){
 				  this.setState({ item: res.data, name: "", description: "", UserID: "", categories: categorySelect})
 				}
+        this.loadCategories();
         })
 				.catch(err => console.log(err));
 	};

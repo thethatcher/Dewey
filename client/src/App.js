@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Auth from "./components/Auth";
 import Categories from "./pages/Categories";
 import Items from "./pages/Items";
 
@@ -11,7 +12,7 @@ const App = () =>
     <div>
       <Nav />
       <Switch>
-        <Route exact path="/" component={Categories} />
+        <Route exact path="/" component={Auth} />
         <Route exact path="/Categories" component={Categories} />
         <Route exact path="/Categories/:id" component={Categories} />
         <Route exact path="/Items" component={Items} />
