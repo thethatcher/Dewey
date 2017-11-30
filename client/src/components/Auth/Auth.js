@@ -73,6 +73,7 @@ signIn() {
    API.checkUser({ username: user.email });
    console.log(user.email);
    // ...
+   window.location.replace(window.location.href + "categories");
   }).catch(function(error) {
    // Handle Errors here.
    var errorCode = error.code;
@@ -89,7 +90,7 @@ signIn() {
       btnLogout.classList.remove('hide');
       sessionStorage.username = firebaseUser.email;
       API.checkUser({ username: firebaseUser.email });
-      window.location.replace(window.location.href + "categories");
+      // window.location.replace(window.location.href + "categories");
     } else {
       console.log('not logged in');
       sessionStorage.username = null;
