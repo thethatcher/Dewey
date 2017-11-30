@@ -18,30 +18,34 @@ class Item extends Component {
     	};
 
 	componentDidMount() {
-		this.loadItems();
-    this.loadCategories();
+    this.loadCategories(this.handleSelectChange);
 	}
 
-  loadCategories = () => {
+  loadCategories = (callBack) => {
     API.getCategories(sessionStorage.username)
     .then((res)=>{ 
       if(res.data){
         categorySelect = res;
-        this.setState({ categories: categorySelect.data});
+        this.setState({ categories: categorySelect.data}, callBack());
       }
     });
   };
 
 	loadItems = () => {
-		API.getItems(sessionStorage.username)
+		API.getItems(sessionStorage.username, this.state.categoryId)
 			.then(res => {
         if(res.data){
-				  this.setState({ item: res.data, name: "", description: "", UserID: "", categories: categorySelect})
+				  this.setState({ item: res.data, name: "", description: "", UserID: ""})
 				}
-        this.loadCategories();
         })
 				.catch(err => console.log(err));
 	};
+
+  handleSelectChange = (event)=> {
+    const categoryId = parseInt(document.getElementById("categorySelect").value);
+    console.log(categoryId);
+    this.setState({categoryId: categoryId},()=>{this.loadItems()});
+  }
 
   deleteItems = id => {
     API.deleteItems(id)
@@ -49,7 +53,7 @@ class Item extends Component {
       .catch(err => console.log(err));
   };
 
-    handleInputChange = event => {
+  handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
       [name]: value
@@ -62,7 +66,8 @@ class Item extends Component {
 			API.saveItems({
 				name: this.state.name,
         description: this.state.description,
-        UserUsername: sessionStorage.username
+        UserUsername: sessionStorage.username,
+        CategoryId: this.state.categoryId
 			})
 
 			.then(res => this.loadItems())
@@ -70,20 +75,18 @@ class Item extends Component {
 		}
 	};
 
-
-
-		render() {
+	render() {
     return (
       <Container fluid>
         <Row>
           <Col size="md-3">
             <h1>Category</h1>
-            <select>
+            <select id="categorySelect" onChange={this.handleSelectChange}>
               {(this.state.categories.length > 0) ? 
                 (
                   this.state.categories.map((category)=>{
                     //TODO add an onselect to change the this.state.categoryId
-                    return (<option value={category.name}>{category.name}</option>);
+                    return (<option value={category.id}>{category.name}</option>);
                   })
                 ) 
                 : 
