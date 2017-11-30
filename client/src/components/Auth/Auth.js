@@ -35,9 +35,10 @@ btnLogin.addEventListener('click', e => {
   // Sign in
   const promise = auth.signInWithEmailAndPassword(email, pass);
   promise.catch(e => console.log(e.message))
-  .then(
-    sessionStorage.username = email
-    //redirect
+  .then(()=>{
+      sessionStorage.username = email;
+      window.location.replace(window.location.href + "categories");
+      }
     );
   API.checkUser({ username: email });
   console.log(email);
@@ -51,10 +52,10 @@ btnSignUp.addEventListener('click', e => {
   // Create user
   const promise = auth.createUserWithEmailAndPassword(email, pass);
   promise.catch(e => alert(e.message))
-  .then(
+  .then(()=>{
     sessionStorage.username = email
-    //redirect
-    );
+    window.location.replace(window.location.href + "categories");
+    });
   API.checkUser({ username: email });
   console.log(email);
 });
@@ -87,9 +88,11 @@ signIn() {
       console.log(firebaseUser);
       btnLogout.classList.remove('hide');
       sessionStorage.username = firebaseUser.email;
-      //redirect
+      API.checkUser({ username: firebaseUser.email });
+      window.location.replace(window.location.href + "categories");
     } else {
       console.log('not logged in');
+      sessionStorage.username = null;
     }
   });
 };
