@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import firebase from 'firebase'
+import API from "../../utils/API";
+
 class Auth extends Component {
 // Setting the initial values of this.state.username and this.state.password
 state = {
@@ -37,6 +39,7 @@ btnLogin.addEventListener('click', e => {
     sessionStorage.username = email
     //redirect
     );
+  API.checkUser({ username: email });
   console.log(email);
 });
 // On click sign up
@@ -52,6 +55,7 @@ btnSignUp.addEventListener('click', e => {
     sessionStorage.username = email
     //redirect
     );
+  API.checkUser({ username: email });
   console.log(email);
 });
 
@@ -65,6 +69,7 @@ signIn() {
    var token = result.credential.accessToken;
    // The signed-in user info.
    var user = result.user;
+   API.checkUser({ username: user.email });
    console.log(user.email);
    // ...
   }).catch(function(error) {
@@ -88,6 +93,16 @@ signIn() {
     }
   });
 };
+
+// loadUser = () => {
+//     API.checkUser(sessionStorage.username)
+//     .then((res)=>{ 
+//       if(res.username){
+//         categorySelect = res;
+//         this.setState({ username: email});
+//       }
+//     });
+//   };
 
 //WHEN the component mounts run all this crap
 // Initialize Firebase

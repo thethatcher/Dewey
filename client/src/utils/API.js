@@ -37,6 +37,10 @@ export default {
     return axios.post("/api/items", itemData);
   },
 
+  checkUser: function(email) {
+    return axios.post("/api/users", email);
+  },
+
 };
 
  
