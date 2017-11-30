@@ -5,12 +5,14 @@ import { List, ListItem } from "../../components/List";
 import { Input, TextArea, FormBtn } from "../../components/Form";
 import EditBtn from "../../components/EditBtn";
 import DeleteBtn from "../../components/DeleteBtn";
-
+let categorySelect = [];
+API.getCategories(sessionStorage.username)
+.then((res)=>{ categorySelect = res; console.log(categorySelect);});
 
 
 class Category extends Component {
 	state = {
-		category: [],
+		category: categorySelect,
 		name: ""
 	};
 
