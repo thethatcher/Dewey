@@ -5,26 +5,40 @@ import { List, ListItem } from "../../components/List";
 import { Input, TextArea, FormBtn } from "../../components/Form";
 import EditBtn from "../../components/EditBtn";
 import DeleteBtn from "../../components/DeleteBtn";
-
-
-
+let categorySelect = [];
+let itemArray = [];
 
 class Item extends Component {
 	state = {
-		item: [],
+    categoryId: 1, 
+    categories: categorySelect,
+		item: itemArray,
 		name: "",
     description: ""
     	};
 
 	componentDidMount() {
 		this.loadItems();
+    this.loadCategories();
 	}
+
+  loadCategories = () => {
+    API.getCategories(sessionStorage.username)
+    .then((res)=>{ 
+      if(res.data){
+        categorySelect = res;
+        this.setState({ categories: categorySelect.data});
+      }
+    });
+  };
 
 	loadItems = () => {
 		API.getItems(sessionStorage.username)
-			.then(res =>
-				this.setState({ item: res.data, name: "", description: "", UserID: ""})
-				)
+			.then(res => {
+        if(res.data){
+				  this.setState({ item: res.data, name: "", description: "", UserID: "", categories: categorySelect})
+				}
+        })
 				.catch(err => console.log(err));
 	};
 
@@ -62,6 +76,18 @@ class Item extends Component {
       <Container fluid>
         <Row>
           <Col size="md-3">
+            <h1>Category</h1>
+            <select>
+              {(this.state.categories.length > 0) ? 
+                (
+                  this.state.categories.map((category)=>{
+                    //TODO add an onselect to change the this.state.categoryId
+                    return (<option value={category.name}>{category.name}</option>);
+                  })
+                ) 
+                : 
+                (<option value="none">Please create a category to continue</option>)}
+            </select>
             
               <h5>Add A New Item</h5>
             
@@ -95,15 +121,15 @@ class Item extends Component {
             
               <h5>Existing Items</h5>
             
-            {this.state.item.length ? (
+            {(this.state.item.length > 0) ? (
               <List>
               
                 {this.state.item.map(item => (
-                  <ListItem key={item._id}>
+                  <ListItem key={item.id}>
                                              
                         {item.name} {item.description}
                                       
-                    <EditBtn onClick={() => this.deleteItems(item._id)} />
+                    <EditBtn onClick={() => this.deleteItems(item.id)} />
                     
                   </ListItem>
                   

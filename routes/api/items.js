@@ -31,7 +31,7 @@ router.route("/checkIn/:id")
 .put((req,res)=>{
   db.Item.findOne({
       where:{
-        UserId: 1 //DELTA UserID will need to be replaced by the variable for the currently logged in user. 
+        UserUsername: req.body.username 
         ,id: req.params.id
       } 
       ,include: [{
