@@ -1495,7 +1495,7 @@ muri@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/muri/-/muri-1.3.0.tgz#aeccf3db64c56aa7c5b34e00f95b7878527a4721"
 
-mysql2@^1.5.0:
+mysql2@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/mysql2/-/mysql2-1.5.1.tgz#2411d6fb958af86b2304b7a53bc54b26e77e682b"
   dependencies:
@@ -2019,9 +2019,9 @@ seq-queue@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/seq-queue/-/seq-queue-0.0.5.tgz#d56812e1c017a6e4e7c3e3a37a1da6d78dd3c93e"
 
-sequelize@^4.22.6:
-  version "4.23.2"
-  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-4.23.2.tgz#375b045410f4ba4adb200be50f38b223bdba7720"
+sequelize@^4.23.2:
+  version "4.23.4"
+  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-4.23.4.tgz#51d36c1ae084f1c8ca8b9ff19209a82df43a625a"
   dependencies:
     bluebird "^3.4.6"
     cls-bluebird "^2.0.1"
