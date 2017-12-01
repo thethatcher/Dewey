@@ -5,42 +5,93 @@ import { List, ListItem } from "../../components/List";
 import { Input, TextArea, FormBtn } from "../../components/Form";
 import EditBtn from "../../components/EditBtn";
 import DeleteBtn from "../../components/DeleteBtn";
-let categorySelect = [];
-let itemArray = [];
+import OutBtn from "../../components/OutBtn";
+import InBtn from "../../components/InBtn";
+import ReactDOM from "react-dom";
+
+import DayPicker from "react-day-picker";
+import DayPickerInput from "react-day-picker/DayPickerInput";
+
+import "react-day-picker/lib/style.css";
+
+import MomentLocaleUtils, {
+  formatDate,
+  parseDate,
+} from 'react-day-picker/moment';
+
+import 'moment/locale/it';
+
 
 class Item extends Component {
-	state = {
+  state = {
     categoryId: 1, 
-    categories: categorySelect,
-		item: itemArray,
-		name: "",
-    description: ""
-    	};
+    categories: [],
+    item: [],
+    name: "",
+    description: "",
+    Transaction: [],
+    lent_date: "",
+    due_date:"",
+    returned_date:"",
+    lent_condition:"",
+    return_condition: "",
+      };
 
-	componentDidMount() {
-		this.loadItems();
-    this.loadCategories();
-	}
+  componentDidMount() {
+    API.getCategories(sessionStorage.username)
+    .then((res)=>{ 
+      let tempState = {};
+      tempState.categories = res.data;
+      tempState.categoryId = res.data[0].id;
+      API.getItems(sessionStorage.username, res.data[0].id)
+      .then(itemRes => {
+        (itemRes.data.length > 0) ? tempState.item = itemRes.data : console.log("itemRes is empty!");
+      })
+      API.getTransaction()
+            .then(res =>
+        this.setState({ Transaction: res.data, lent_date: "", due_date:"", returned_date:"", lent_condition:"", return_condition: ""})
+        )
+      .catch(err => console.log(err))
+      .then(()=>{this.setState(tempState);});
+    });
+  }
+
+  
+
 
   loadCategories = () => {
     API.getCategories(sessionStorage.username)
     .then((res)=>{ 
       if(res.data){
-        categorySelect = res;
-        this.setState({ categories: categorySelect.data});
+        this.setState({ categories: res.data});
       }
     });
   };
 
-	loadItems = () => {
-		API.getItems(sessionStorage.username)
-			.then(res => {
+  loadItems = () => {
+    API.getItems(sessionStorage.username, this.state.categoryId)
+      .then(res => {
         if(res.data){
-				  this.setState({ item: res.data, name: "", description: "", UserID: "", categories: categorySelect})
-				}
+          this.setState({ item: res.data, name: "", description: "", UserID: ""})
+        }
         })
-				.catch(err => console.log(err));
-	};
+        .catch(err => console.log(err));
+  };
+
+
+  loadTransactions = () => {
+    API.getTransaction()
+      .then(res =>
+        this.setState({ Transaction: res.data, lent_date: "", due_date:"", returned_date:"", lent_condition:"", return_condition: ""})
+        )
+        .catch(err => console.log(err));
+  };
+
+  handleSelectChange = (event)=> {
+    const categoryId = parseInt(document.getElementById("categorySelect").value);
+    console.log("The category ID is ",categoryId);
+    this.setState({categoryId: categoryId},()=>{this.loadItems()});
+  }
 
   deleteItems = id => {
     API.deleteItems(id)
@@ -48,41 +99,47 @@ class Item extends Component {
       .catch(err => console.log(err));
   };
 
-    handleInputChange = event => {
+  handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
       [name]: value
     });
   };
 
-	handleFormSubmit = event => {
-		event.preventDefault();
-		if (this.state.name) {
-			API.saveItems({
-				name: this.state.name,
+  handleFormSubmit = event => {
+    event.preventDefault();
+    if (this.state.name) {
+      API.saveItems({
+        name: this.state.name,
         description: this.state.description,
-        UserUsername: sessionStorage.username
-			})
+        UserUsername: sessionStorage.username,
+        CategoryId: this.state.categoryId
+        })
+      API.saveTransaction({
+        lent_date: this.state.lent_date,
+        due_date:this.this.state.due_date,
+        returned_date:this.state.returned_date
 
-			.then(res => this.loadItems())
-			.catch(err => console.log(err));
-		}
-	};
+      
+      })
 
+      .then(res => this.loadItems())
+      .catch(err => console.log(err));
+    }
+  };
 
-
-		render() {
+  render() {
     return (
       <Container fluid>
         <Row>
           <Col size="md-3">
             <h1>Category</h1>
-            <select>
+            <select id="categorySelect" onChange={this.handleSelectChange}>
               {(this.state.categories.length > 0) ? 
                 (
                   this.state.categories.map((category)=>{
                     //TODO add an onselect to change the this.state.categoryId
-                    return (<option value={category.name}>{category.name}</option>);
+                    return (<option value={category.id}>{category.name}</option>);
                   })
                 ) 
                 : 
@@ -127,9 +184,46 @@ class Item extends Component {
                 {this.state.item.map(item => (
                   <ListItem key={item.id}>
                                              
-                        {item.name} {item.description}
-                                      
-                    <EditBtn onClick={() => this.deleteItems(item.id)} />
+                        {item.name}           
+
+                        
+      <div>
+          <h5>Lent Date:</h5>
+            <DayPickerInput
+            formatDate={formatDate}
+            parseDate={parseDate}
+            placeholder={`${formatDate(new Date())}`}
+          />
+      
+      </div>
+
+        <div>
+          <h5>Due Date:</h5>
+            <DayPickerInput
+            formatDate={formatDate}
+            parseDate={parseDate}
+            placeholder={`${formatDate(new Date())}`}
+          />
+      
+      </div>
+
+         <div>
+          <h5>Return Date:</h5>
+            <DayPickerInput
+            formatDate={formatDate}
+            parseDate={parseDate}
+            placeholder={`${formatDate(new Date())}`}
+          />
+      
+      </div>
+
+
+        
+             
+                                     
+                   
+                    <OutBtn onClick={() => this.deleteItems(item.id)} />
+                    <InBtn onClick={() => this.deleteItems(item.id)} />
                     
                   </ListItem>
                   
@@ -161,7 +255,7 @@ export default Item;
 
 
 
-	
+  
 
 
 

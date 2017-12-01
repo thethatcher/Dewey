@@ -37,6 +37,14 @@ export default {
     return axios.post("/api/items", itemData);
   },
 
+  getTransaction: function() {
+    return axios.get("/api/transactions");
+  },
+
+  saveTransaction: function(transactionData) {
+    return axios.get("/api/transaction", transactionData);
+  },
+
 };
 
  
