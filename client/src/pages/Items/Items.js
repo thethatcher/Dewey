@@ -5,28 +5,36 @@ import { List, ListItem } from "../../components/List";
 import { Input, TextArea, FormBtn } from "../../components/Form";
 import EditBtn from "../../components/EditBtn";
 import DeleteBtn from "../../components/DeleteBtn";
-let categorySelect = [];
-let itemArray = [];
 
 class Item extends Component {
 	state = {
     categoryId: 1, 
-    categories: categorySelect,
-		item: itemArray,
+    categories: [],
+		item: [],
 		name: "",
     description: ""
     	};
 
 	componentDidMount() {
-    this.loadCategories(this.handleSelectChange);
+    API.getCategories(sessionStorage.username)
+    .then((res)=>{ 
+      let tempState = {};
+      tempState.categories = res.data;
+      tempState.categoryId = res.data[0].id;
+      API.getItems(sessionStorage.username, res.data[0].id)
+      .then(itemRes => {
+        (itemRes.data.length > 0) ? tempState.item = itemRes.data : console.log("itemRes is empty!");
+      })
+      .catch(err => console.log(err))
+      .then(()=>{this.setState(tempState);});
+    });
 	}
 
-  loadCategories = (callBack) => {
+  loadCategories = () => {
     API.getCategories(sessionStorage.username)
     .then((res)=>{ 
       if(res.data){
-        categorySelect = res;
-        this.setState({ categories: categorySelect.data}, callBack());
+        this.setState({ categories: res.data});
       }
     });
   };
@@ -43,7 +51,7 @@ class Item extends Component {
 
   handleSelectChange = (event)=> {
     const categoryId = parseInt(document.getElementById("categorySelect").value);
-    console.log(categoryId);
+    console.log("The category ID is ",categoryId);
     this.setState({categoryId: categoryId},()=>{this.loadItems()});
   }
 
