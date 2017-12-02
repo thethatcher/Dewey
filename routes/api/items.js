@@ -44,7 +44,10 @@ router.route("/checkIn/:id")
           ,attributes:["name","id"]
         }]
     }).then((dbItem) => {
-      db.Transaction.update(req.body,
+      db.Transaction.update({
+        return_condition: req.body.return_condition,
+        returned_date: req.body.returned_date
+      },
         {
         where: {id: dbItem.Transactions[0].id}
         }

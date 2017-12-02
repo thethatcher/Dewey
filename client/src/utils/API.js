@@ -49,6 +49,14 @@ export default {
     return axios.post("/api/users", email);
   },
 
+  checkout: function(id, transactionData){
+    return axios.post("/api/items/checkout/" + id, transactionData)
+  },
+
+  checkin: function(id, transactionData){
+    return axios.put("/api/items/checkin/" + id, transactionData)
+  },
+
 };
 
  

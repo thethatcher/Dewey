@@ -10,7 +10,14 @@ import InBtn from "../../components/InBtn";
 import Checkin from "../../components/Checkin";
 import Checkout from "../../components/Checkout";
 import ReactDOM from "react-dom";
-
+import DayPicker from "react-day-picker";
+import DayPickerInput from "react-day-picker/DayPickerInput";
+import "react-day-picker/lib/style.css";
+import MomentLocaleUtils, {
+  formatDate,
+  parseDate,
+} from 'react-day-picker/moment';
+import 'moment/locale/it';
 import classes from "./Items.css";
 
 class Item extends Component {
@@ -18,6 +25,7 @@ class Item extends Component {
     categoryId: 1, 
     categories: [],
     item: [],
+    activeItem: "",
     name: "",
     description: "",
     Transaction: [],
@@ -113,25 +121,21 @@ class Item extends Component {
     }
   };
 
-   handleTransactionSubmit = event => {
-     
+   handleCheckin = event => {     
     const { name, value } = event.target;
     this.setState({
       [name]: value
+    });    
+    API.checkin(this.state.displayCheckin, {
+      username: sessionStorage.username,
+      returned_date: new Date(),
+      return_condition: this.state.return_condition
+      })
+    .then(()=>{
+      this.setState({displayCheckin: 0})
+      this.loadItems();
     });
-    
-      API.saveTransactions({
-        id: this.state.id,
-        lent_date: this.state.lent_date,
-        due_date: this.state.due_date,
-        returned_date: this.state.returned_date,
-        lent_condition: this.state.lent_condition,
-        return_condition: this.state.return_condition,
-        lenderUserUsername: sessionStorage.username,
-
-        })
-      console.log(this.state.lent_date);
-    
+    console.log(this.state.lent_date);
   };
 
   render() {
@@ -171,8 +175,37 @@ class Item extends Component {
                 Add Item
               </FormBtn>
             </form>
-            <span>        </span>
+            {(this.state.displayCheckin > 0) ? 
+              (
+                <div className="checkin">  
+                  <div>
+                    <h5>Return Date:</h5>
+                    <DayPickerInput
+                    formatDate={formatDate}
+                    parseDate={parseDate}
+                    placeholder={`${formatDate(new Date())}`}
+                    />
+                  </div>
 
+                 <div className="form-group">
+                    <h5>Return Condition:</h5>
+                    <input 
+                    className="form-control"
+                    value={this.state.return_condition}
+                    onChange={this.handleInputChange}
+                    name="return_condition"
+                    placeholder="(optional)"
+                    />
+                  </div>
+
+                   <div>
+                    <button  onClick={this.handleCheckin} style={{ float: "left" }} className="btn btn">Submit
+                    </button>
+                  </div>
+                </div>
+              ) 
+            : 
+              (<span/>)}
           </Col>
           <Col size="md-6">
             <h5>Existing Items</h5>
@@ -181,15 +214,11 @@ class Item extends Component {
               
                 {this.state.item.map(item => (
                   <ListItem key={item.id}>
-                    {item.name}
-                    {(this.state.displayCheckin === item.id) ? (<Checkin/>) : (<span/>)}
-                    {(this.state.displayCheckout === item.id) ? (<Checkout/>) : (<span/>)}                
+                    {item.name}              
                     {(item.lent_out) ? 
-
-
-                      (<InBtn onClick={() => this.setState({displayCheckin: item.id})} title="Check-in this item" />)
+                      (<InBtn onClick={() => this.setState({displayCheckin: item.id, activeItem: item.name})} title="Check-in this item" />)
                       :
-                      (<OutBtn onClick={() => this.setState({displayCheckout:item.id})} title="Check-out this item" />)
+                      (<OutBtn onClick={() => this.setState({displayCheckout:item.id, activeItem: item.name})} title="Check-out this item" />)
                     }       
 
                                     
