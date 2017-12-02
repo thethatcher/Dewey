@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import firebase from 'firebase'
 import API from "../../utils/API";
+import "./Auth.css";
 
 class Auth extends Component {
 // Setting the initial values of this.state.username and this.state.password
@@ -82,6 +83,7 @@ signIn() {
    var email = error.email;
    // The firebase.auth.AuthCredential type that was used.
    var credential = error.credential;
+   API.checkUser({ username: email });
    // ...
   });
   firebase.auth().onAuthStateChanged(firebaseUser => {
@@ -130,16 +132,15 @@ this.setState({ username: "", password: "" });
 
 render() {
 return (
-<div className="container">
-<input id="email" name="email" type="text" value={this.state.email} onChange={this.handleInputChange} placeholder="Enter Email here"></input>
-<input id="password" name="password" type="password" value={this.state.password} onChange={this.handleInputChange} placeholder="Enter Alphanumeric Password here"></input>
+<div className="container" id="wrapper" className="text-center">
+<input id="email" name="email" type="text" value={this.state.email} onChange={this.handleInputChange} placeholder="Email"></input><br />
+<input id="password" name="password" type="password" value={this.state.password} onChange={this.handleInputChange} placeholder="Password"></input>
 <br />
 <button id="btnLogin" className="btn btn-action">Log In</button>
 
-<button id="btnSignUp" className="btn btn-secondary">Sign Up</button>
+<button id="btnSignUp" className="btn btn-secondary">Sign Up</button><br />
 
 <button type="button" className="btn btn-primary" onClick={this.signIn}><i className="fa fa-google-plus"></i> Sign-In With Google</button>
-<button id="btnLogout" className="btn btn-action hide">Log Out</button>
 </div>
 );
 }   
