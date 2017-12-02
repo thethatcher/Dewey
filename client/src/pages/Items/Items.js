@@ -8,18 +8,15 @@ import DeleteBtn from "../../components/DeleteBtn";
 import OutBtn from "../../components/OutBtn";
 import InBtn from "../../components/InBtn";
 import ReactDOM from "react-dom";
-
 import DayPicker from "react-day-picker";
 import DayPickerInput from "react-day-picker/DayPickerInput";
-
 import "react-day-picker/lib/style.css";
-
 import MomentLocaleUtils, {
   formatDate,
   parseDate,
 } from 'react-day-picker/moment';
-
 import 'moment/locale/it';
+import classes from "./Items.css";
 
 class Item extends Component {
   state = {
@@ -125,6 +122,14 @@ class Item extends Component {
     }
   };
 
+  displayCheckin = (event) => {
+    console.log(this);
+  };
+
+  displayCheckout = (event) => {
+    console.log(this);
+  };
+
   render() {
     return (
       <Container fluid>
@@ -174,7 +179,7 @@ class Item extends Component {
                 {this.state.item.map(item => (
                   <ListItem key={item.id}>
                     {item.name}  
-                    <div class="checkout">        
+                    <div className="checkout">        
                       <div>
                         <h5>Lent Date:</h5>
                         <DayPickerInput
@@ -191,6 +196,8 @@ class Item extends Component {
                         placeholder={`${formatDate(new Date())}`}
                         />
                       </div>
+                    </div>
+                    <div className="checkin">  
                       <div>
                         <h5>Return Date:</h5>
                         <DayPickerInput
@@ -201,9 +208,9 @@ class Item extends Component {
                       </div>
                     </div>
                     {(item.lent_out) ? 
-                      (<InBtn onClick={() => this.deleteItems(item.id)} title="Check-in this item" />)
+                      (<InBtn onClick={() => this.displayCheckin(item.id)} title="Check-in this item" />)
                       :
-                      (<OutBtn onClick={() => this.deleteItems(item.id)} title="Check-out this item" />)
+                      (<OutBtn onClick={() => this.displayCheckout(item.id)} title="Check-out this item" />)
                     }                    
                   </ListItem>
                 ))}
