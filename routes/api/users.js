@@ -30,6 +30,7 @@ router.route("/")
 router.route("/items/:username/:categoryId")
 .get((req,res)=>{
 	db.Item.findAll({
+		order: [["name","ASC"]],
 		where: {UserUsername: req.params.username, CategoryId: req.params.categoryId} 
 	})
 	.then((dbItems)=>{
@@ -40,6 +41,7 @@ router.route("/items/:username/:categoryId")
 router.route("/categories/:username")
 .get((req,res)=>{
 	db.Category.findAll({
+		order: [["name","ASC"]],
 		include:[{model:db.User, where:{username: req.params.username}}]
 	})
 	.then((dbCategories)=>{res.json(dbCategories);});

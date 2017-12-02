@@ -55,6 +55,22 @@ router.route("/checkIn/:id")
     });
 });
 
+router.route("/checkout/:id")
+.post((req,res)=>{
+  db.Transaction.create({
+    ItemId: req.params.id
+    ,lent_date: req.body.lent_date
+    ,due_date: req.body.due_date
+    ,lent_condition: req.body.lent_condition
+    ,borrower: req.body.borrower
+    ,lenderUserUsername: req.body.username
+  })
+  .then((dbTransaction)=>{
+    db.Item.update({lent_out: true}, {where:{id: req.params.id}})
+    .then((checkOutItem)=>{res.json(checkOutItem)});
+  })
+})
+
 //get and update a specific item's name, description, etc...
 router.route("/:id")
 .get((req,res)=>{
