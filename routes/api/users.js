@@ -32,6 +32,11 @@ router.route("/items/:username/:categoryId")
 	db.Item.findAll({
 		order: [["name","ASC"]],
 		where: {UserUsername: req.params.username, CategoryId: req.params.categoryId} 
+		,include: [{
+        model: db.Transaction
+        ,limit: 1
+        ,order: [["updatedAt","DESC"]]
+        }]
 	})
 	.then((dbItems)=>{
 		res.json(dbItems);

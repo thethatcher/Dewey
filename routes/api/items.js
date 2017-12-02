@@ -44,7 +44,10 @@ router.route("/checkIn/:id")
           ,attributes:["name","id"]
         }]
     }).then((dbItem) => {
-      db.Transaction.update(req.body,
+      db.Transaction.update({
+        return_condition: req.body.return_condition,
+        returned_date: req.body.returned_date
+      },
         {
         where: {id: dbItem.Transactions[0].id}
         }
@@ -63,6 +66,7 @@ router.route("/checkout/:id")
     ,due_date: req.body.due_date
     ,lent_condition: req.body.lent_condition
     ,borrower: req.body.borrower
+    ,borrowerUserUserName: req.body.borrower
     ,lenderUserUsername: req.body.username
   })
   .then((dbTransaction)=>{

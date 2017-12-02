@@ -41,12 +41,20 @@ export default {
     return axios.get("/api/transactions");
   },
 
-  saveTransaction: function(transactionData) {
-    return axios.get("/api/transaction", transactionData);
+  saveTransactions: function(transactionData) {
+    return axios.post("/api/transactions", transactionData);
   },
 
   checkUser: function(email) {
     return axios.post("/api/users", email);
+  },
+
+  checkout: function(id, transactionData){
+    return axios.post("/api/items/checkout/" + id, transactionData)
+  },
+
+  checkin: function(id, transactionData){
+    return axios.put("/api/items/checkin/" + id, transactionData)
   },
 
 };
