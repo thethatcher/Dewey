@@ -109,6 +109,7 @@ class Item extends Component {
         UserUsername: sessionStorage.username,
         CategoryId: this.state.categoryId
       })
+      .then((res)=> {this.loadItems();})
     }
   };
 
