@@ -43,17 +43,19 @@ class Item extends Component {
     console.log("Item Component Mounted!");
     API.getCategories(sessionStorage.username)
     .then((res)=>{ 
-      let tempState = {};
-      tempState.categories = res.data;
-      tempState.categoryId = res.data[0].id;
-      API.getItems(sessionStorage.username, res.data[0].id)
-      .then(itemRes => {
-        (itemRes.data.length > 0) ? tempState.item = itemRes.data : console.log("itemRes is empty!");
-      })
-      .then(()=>{
-        console.log("tempState", tempState);
-        this.setState(tempState);
-      });
+      if(res.data.length > 0){
+        let tempState = {};
+        tempState.categories = res.data;
+        tempState.categoryId = res.data[0].id;
+        API.getItems(sessionStorage.username, res.data[0].id)
+        .then(itemRes => {
+          (itemRes.data.length > 0) ? tempState.item = itemRes.data : console.log("itemRes is empty!");
+        })
+        .then(()=>{
+          console.log("tempState", tempState);
+          this.setState(tempState);
+        });
+      }
     });
   };  
 
