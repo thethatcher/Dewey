@@ -19,7 +19,19 @@ const Checkin = props => (
 	    placeholder={`${formatDate(new Date())}`}
 	    />
 	  </div>
-	</div>
+
+	 <div className="form-group">
+    	<h5>Return Condition:</h5>
+    	<input className="form-control" {...props} />
+  	</div>
+
+  	 <div>
+      <button  onClick={this.handleTransactionSubmit} style={{ float: "left" }} className="btn btn">Submit
+      </button>
+    </div>
+
+</div>
+
 );
 export default Checkin;
 

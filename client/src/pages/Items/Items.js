@@ -102,7 +102,8 @@ class Item extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    if (this.state.name) {
+    
+    {
       API.saveItems({
         name: this.state.name,
         description: this.state.description,
@@ -110,6 +111,27 @@ class Item extends Component {
         CategoryId: this.state.categoryId
       })
     }
+  };
+
+   handleTransactionSubmit = event => {
+     
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+    
+      API.saveTransactions({
+        id: this.state.id,
+        lent_date: this.state.lent_date,
+        due_date: this.state.due_date,
+        returned_date: this.state.returned_date,
+        lent_condition: this.state.lent_condition,
+        return_condition: this.state.return_condition,
+        lenderUserUsername: sessionStorage.username,
+
+        })
+      console.log(this.state.lent_date);
+    
   };
 
   render() {
@@ -163,10 +185,15 @@ class Item extends Component {
                     {(this.state.displayCheckin === item.id) ? (<Checkin/>) : (<span/>)}
                     {(this.state.displayCheckout === item.id) ? (<Checkout/>) : (<span/>)}                
                     {(item.lent_out) ? 
+
+
                       (<InBtn onClick={() => this.setState({displayCheckin: item.id})} title="Check-in this item" />)
                       :
                       (<OutBtn onClick={() => this.setState({displayCheckout:item.id})} title="Check-out this item" />)
-                    }                    
+                    }       
+
+                                    
+
                   </ListItem>
                 ))}
               </List>

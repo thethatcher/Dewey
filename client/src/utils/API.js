@@ -41,8 +41,8 @@ export default {
     return axios.get("/api/transactions");
   },
 
-  saveTransaction: function(transactionData) {
-    return axios.get("/api/transaction", transactionData);
+  saveTransactions: function(transactionData) {
+    return axios.post("/api/transactions", transactionData);
   },
 
   checkUser: function(email) {

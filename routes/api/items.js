@@ -63,6 +63,7 @@ router.route("/checkout/:id")
     ,due_date: req.body.due_date
     ,lent_condition: req.body.lent_condition
     ,borrower: req.body.borrower
+    ,borrowerUserUserName: req.body.borrower
     ,lenderUserUsername: req.body.username
   })
   .then((dbTransaction)=>{
