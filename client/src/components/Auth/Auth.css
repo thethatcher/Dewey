@@ -1,0 +1,9 @@
+@font-face {
+	font-family: 'Special Elite';
+	weight: 400;
+	src: url('https://fonts.googleapis.com/css?family=Special+Elite');
+}
+
+#email {
+	font-family: 'Special Elite';
+}
