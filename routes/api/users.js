@@ -27,10 +27,10 @@ router.route("/")
 	});
 });
 
-router.route("/items/:username")
+router.route("/items/:username/:categoryId")
 .get((req,res)=>{
 	db.Item.findAll({
-		where: {UserUsername: req.params.username} 
+		where: {UserUsername: req.params.username, CategoryId: req.params.categoryId} 
 	})
 	.then((dbItems)=>{
 		res.json(dbItems);

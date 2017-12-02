@@ -21,7 +21,6 @@ import MomentLocaleUtils, {
 
 import 'moment/locale/it';
 
-
 class Item extends Component {
   state = {
     categoryId: 1, 
@@ -35,9 +34,10 @@ class Item extends Component {
     returned_date:"",
     lent_condition:"",
     return_condition: "",
-      };
+  };
 
   componentDidMount() {
+    console.log("Item Component Mounted!");
     API.getCategories(sessionStorage.username)
     .then((res)=>{ 
       let tempState = {};
@@ -47,17 +47,12 @@ class Item extends Component {
       .then(itemRes => {
         (itemRes.data.length > 0) ? tempState.item = itemRes.data : console.log("itemRes is empty!");
       })
-      API.getTransaction()
-            .then(res =>
-        this.setState({ Transaction: res.data, lent_date: "", due_date:"", returned_date:"", lent_condition:"", return_condition: ""})
-        )
-      .catch(err => console.log(err))
-      .then(()=>{this.setState(tempState);});
+      .then(()=>{
+        console.log("tempState", tempState);
+        this.setState(tempState);
+      });
     });
-  }
-
-  
-
+  };  
 
   loadCategories = () => {
     API.getCategories(sessionStorage.username)
@@ -74,10 +69,9 @@ class Item extends Component {
         if(res.data){
           this.setState({ item: res.data, name: "", description: "", UserID: ""})
         }
-        })
-        .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
   };
-
 
   loadTransactions = () => {
     API.getTransaction()
@@ -91,7 +85,13 @@ class Item extends Component {
     const categoryId = parseInt(document.getElementById("categorySelect").value);
     console.log("The category ID is ",categoryId);
     this.setState({categoryId: categoryId},()=>{this.loadItems()});
-  }
+  };
+
+  handleSelectChange = (event)=> {
+    const categoryId = parseInt(document.getElementById("categorySelect").value);
+    console.log("The category ID is ",categoryId);
+    this.setState({categoryId: categoryId},()=>{this.loadItems()});
+  };
 
   deleteItems = id => {
     API.deleteItems(id)
@@ -114,15 +114,12 @@ class Item extends Component {
         description: this.state.description,
         UserUsername: sessionStorage.username,
         CategoryId: this.state.categoryId
-        })
+      })
       API.saveTransaction({
         lent_date: this.state.lent_date,
         due_date:this.this.state.due_date,
-        returned_date:this.state.returned_date
-
-      
+        returned_date:this.state.returned_date      
       })
-
       .then(res => this.loadItems())
       .catch(err => console.log(err));
     }
@@ -146,7 +143,7 @@ class Item extends Component {
                 (<option value="none">Please create a category to continue</option>)}
             </select>
             
-              <h5>Add A New Item</h5>
+            <h5>Add A New Item</h5>
             
             <form>
               <Input
@@ -162,71 +159,53 @@ class Item extends Component {
                 name="description"
                 placeholder="Item Description"
               />
-                         
-              
-              <FormBtn
-                
-                onClick={this.handleFormSubmit}
-              >
+              <FormBtn onClick={this.handleFormSubmit}>
                 Add Item
               </FormBtn>
             </form>
             <span>        </span>
 
-</Col>
-            <Col size="md-6">
-            
-              <h5>Existing Items</h5>
-            
+          </Col>
+          <Col size="md-6">
+            <h5>Existing Items</h5>
             {(this.state.item.length > 0) ? (
               <List>
               
                 {this.state.item.map(item => (
                   <ListItem key={item.id}>
-                                             
-                        {item.name}           
-
-                        
-      <div>
-          <h5>Lent Date:</h5>
-            <DayPickerInput
-            formatDate={formatDate}
-            parseDate={parseDate}
-            placeholder={`${formatDate(new Date())}`}
-          />
-      
-      </div>
-
-        <div>
-          <h5>Due Date:</h5>
-            <DayPickerInput
-            formatDate={formatDate}
-            parseDate={parseDate}
-            placeholder={`${formatDate(new Date())}`}
-          />
-      
-      </div>
-
-         <div>
-          <h5>Return Date:</h5>
-            <DayPickerInput
-            formatDate={formatDate}
-            parseDate={parseDate}
-            placeholder={`${formatDate(new Date())}`}
-          />
-      
-      </div>
-
-
-        
-             
-                                     
-                   
-                    <OutBtn onClick={() => this.deleteItems(item.id)} />
-                    <InBtn onClick={() => this.deleteItems(item.id)} />
-                    
+                    {item.name}  
+                    <div class="checkout">        
+                      <div>
+                        <h5>Lent Date:</h5>
+                        <DayPickerInput
+                        formatDate={formatDate}
+                        parseDate={parseDate}
+                        placeholder={`${formatDate(new Date())}`}
+                        />
+                      </div>
+                      <div>
+                        <h5>Due Date:</h5>
+                        <DayPickerInput
+                        formatDate={formatDate}
+                        parseDate={parseDate}
+                        placeholder={`${formatDate(new Date())}`}
+                        />
+                      </div>
+                      <div>
+                        <h5>Return Date:</h5>
+                        <DayPickerInput
+                        formatDate={formatDate}
+                        parseDate={parseDate}
+                        placeholder={`${formatDate(new Date())}`}
+                        />
+                      </div>
+                    </div>
+                    {(item.lent_out) ? 
+                      (<InBtn onClick={() => this.deleteItems(item.id)} title="Check-in this item" />)
+                      :
+                      (<OutBtn onClick={() => this.deleteItems(item.id)} title="Check-out this item" />)
+                    }                    
                   </ListItem>
-                  
                 ))}
               </List>
             ) : (
@@ -240,26 +219,3 @@ class Item extends Component {
 };
 
 export default Item;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
