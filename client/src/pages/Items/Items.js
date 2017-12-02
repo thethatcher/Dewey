@@ -27,6 +27,7 @@ class Item extends Component {
     item: [],
     activeItem: "",
     name: "",
+    borrower: "",
     description: "",
     Transaction: [],
     lent_date: "",
@@ -132,10 +133,25 @@ class Item extends Component {
       return_condition: this.state.return_condition
       })
     .then(()=>{
-      this.setState({displayCheckin: 0})
+      this.setState({displayCheckin: 0, return_condition: ""});
       this.loadItems();
     });
-    console.log(this.state.lent_date);
+  };
+
+  handleCheckout = (event) => {
+    const { name, value } = event.target;
+    this.setState({[name]: value}); 
+    API.checkout(this.state.displayCheckout, {
+      lent_date: new Date()
+      ,due_date: new Date()
+      ,lent_condition: this.state.lent_condition
+      ,borrower: this.state.borrower
+      ,username: sessionStorage.username
+    })
+    .then(()=>{
+      this.setState({displayCheckout: 0, lent_condition: "", borrower: ""});
+      this.loadItems();
+    });
   };
 
   render() {
@@ -175,54 +191,95 @@ class Item extends Component {
                 Add Item
               </FormBtn>
             </form>
-            {(this.state.displayCheckin > 0) ? 
-              (
-                <div className="checkin">  
-                  <div>
-                    <h5>Return Date:</h5>
-                    <DayPickerInput
-                    formatDate={formatDate}
-                    parseDate={parseDate}
-                    placeholder={`${formatDate(new Date())}`}
-                    />
-                  </div>
-
-                 <div className="form-group">
-                    <h5>Return Condition:</h5>
-                    <input 
-                    className="form-control"
-                    value={this.state.return_condition}
-                    onChange={this.handleInputChange}
-                    name="return_condition"
-                    placeholder="(optional)"
-                    />
-                  </div>
-
-                   <div>
-                    <button  onClick={this.handleCheckin} style={{ float: "left" }} className="btn btn">Submit
-                    </button>
-                  </div>
-                </div>
-              ) 
-            : 
-              (<span/>)}
           </Col>
           <Col size="md-6">
             <h5>Existing Items</h5>
             {(this.state.item.length > 0) ? (
               <List>
-              
                 {this.state.item.map(item => (
                   <ListItem key={item.id}>
-                    {item.name}              
+                    {item.name}  
+                    {(this.state.displayCheckin === item.id) ? 
+                      (
+                        <div className="checkin">  
+                          <div>
+                            <h5>Return Date:</h5>
+                            <DayPickerInput
+                            formatDate={formatDate}
+                            parseDate={parseDate}
+                            placeholder={`${formatDate(new Date())}`}
+                            />
+                          </div>
+
+                         <div className="form-group">
+                            <h5>Return Condition:</h5>
+                            <input 
+                            className="form-control"
+                            value={this.state.return_condition}
+                            onChange={this.handleInputChange}
+                            name="return_condition"
+                            placeholder="(optional)"
+                            />
+                          </div>
+
+                           <div>
+                            <button  onClick={this.handleCheckin} style={{ float: "left" }} className="btn btn">Submit
+                            </button>
+                          </div>
+                        </div>
+                      ) 
+                    : 
+                      (<span/>)}
+                    {(this.state.displayCheckout === item.id) ? 
+                      (
+                        <div className="checkout">        
+                          <div>
+                            <h5>Lent Date:</h5>
+                            <DayPickerInput
+                            formatDate={formatDate}
+                            parseDate={parseDate}
+                            placeholder={`${formatDate(new Date())}`}
+                            />
+                          </div>
+                          <div>
+                            <h5>Due Date:</h5>
+                            <DayPickerInput
+                            formatDate={formatDate}
+                            parseDate={parseDate}
+                            placeholder={`${formatDate(new Date())}`}
+                            />
+                          </div>
+                          <div className="form-group">
+                            <h5>Lent Condition:</h5>
+                            <input 
+                            className="form-control"
+                            value={this.state.lent_condition}
+                            onChange={this.handleInputChange}
+                            name="lent_condition"
+                            placeholder="(optional)"
+                            />
+                            <h5>Borrower Name:</h5>
+                            <input 
+                            className="form-control"
+                            value={this.state.borrower}
+                            onChange={this.handleInputChange}
+                            name="borrower"
+                            placeholder="(optional)"
+                            />
+                          </div>
+                          <div>
+                            <button  onClick={this.handleCheckout} style={{ float: "left" }} className="btn btn">Submit
+                            </button>
+                          </div>
+                        </div>
+                      ) 
+                    : 
+                      (<span/>)}            
                     {(item.lent_out) ? 
                       (<InBtn onClick={() => this.setState({displayCheckin: item.id, activeItem: item.name})} title="Check-in this item" />)
                       :
                       (<OutBtn onClick={() => this.setState({displayCheckout:item.id, activeItem: item.name})} title="Check-out this item" />)
                     }       
-
-                                    
-
                   </ListItem>
                 ))}
               </List>
