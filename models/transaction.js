@@ -27,6 +27,9 @@ module.exports = function(sequelize, DataTypes){
 			type: DataTypes.INTEGER
 			,validate: { min: 0, max: 5}
 		},
+		borrower: {
+			type: DataTypes.STRING
+		}
 	});
 
 	Transaction.associate = function(models){
@@ -42,12 +45,6 @@ module.exports = function(sequelize, DataTypes){
 		});
 		Transaction.belongsTo(models.User,{
 			as: "lender_user"
-			,foreignKey: {
-				allowNull: false
-			}
-		});
-		Transaction.belongsTo(models.User,{
-			as: "borrower_user"
 			,foreignKey: {
 				allowNull: false
 			}
