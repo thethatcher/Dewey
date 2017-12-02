@@ -89,7 +89,7 @@ signIn() {
   firebase.auth().onAuthStateChanged(firebaseUser => {
     if(firebaseUser) {
       console.log(firebaseUser);
-      btnLogout.classList.remove('hide');
+      //btnLogout.classList.remove('hide');
       sessionStorage.username = firebaseUser.email;
       API.checkUser({ username: firebaseUser.email });
       // window.location.replace(window.location.href + "categories");
