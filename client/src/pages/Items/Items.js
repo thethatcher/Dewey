@@ -7,15 +7,10 @@ import EditBtn from "../../components/EditBtn";
 import DeleteBtn from "../../components/DeleteBtn";
 import OutBtn from "../../components/OutBtn";
 import InBtn from "../../components/InBtn";
+import Checkin from "../../components/Checkin";
+import Checkout from "../../components/Checkout";
 import ReactDOM from "react-dom";
-import DayPicker from "react-day-picker";
-import DayPickerInput from "react-day-picker/DayPickerInput";
-import "react-day-picker/lib/style.css";
-import MomentLocaleUtils, {
-  formatDate,
-  parseDate,
-} from 'react-day-picker/moment';
-import 'moment/locale/it';
+
 import classes from "./Items.css";
 
 class Item extends Component {
@@ -31,6 +26,8 @@ class Item extends Component {
     returned_date:"",
     lent_condition:"",
     return_condition: "",
+    displayCheckout: 0,
+    displayCheckin: 0,
   };
 
   componentDidMount() {
@@ -112,22 +109,7 @@ class Item extends Component {
         UserUsername: sessionStorage.username,
         CategoryId: this.state.categoryId
       })
-      API.saveTransaction({
-        lent_date: this.state.lent_date,
-        due_date:this.this.state.due_date,
-        returned_date:this.state.returned_date      
-      })
-      .then(res => this.loadItems())
-      .catch(err => console.log(err));
     }
-  };
-
-  displayCheckin = (event) => {
-    console.log(this);
-  };
-
-  displayCheckout = (event) => {
-    console.log(this);
   };
 
   render() {
@@ -140,7 +122,6 @@ class Item extends Component {
               {(this.state.categories.length > 0) ? 
                 (
                   this.state.categories.map((category)=>{
-                    //TODO add an onselect to change the this.state.categoryId
                     return (<option value={category.id}>{category.name}</option>);
                   })
                 ) 
@@ -178,39 +159,13 @@ class Item extends Component {
               
                 {this.state.item.map(item => (
                   <ListItem key={item.id}>
-                    {item.name}  
-                    <div className="checkout">        
-                      <div>
-                        <h5>Lent Date:</h5>
-                        <DayPickerInput
-                        formatDate={formatDate}
-                        parseDate={parseDate}
-                        placeholder={`${formatDate(new Date())}`}
-                        />
-                      </div>
-                      <div>
-                        <h5>Due Date:</h5>
-                        <DayPickerInput
-                        formatDate={formatDate}
-                        parseDate={parseDate}
-                        placeholder={`${formatDate(new Date())}`}
-                        />
-                      </div>
-                    </div>
-                    <div className="checkin">  
-                      <div>
-                        <h5>Return Date:</h5>
-                        <DayPickerInput
-                        formatDate={formatDate}
-                        parseDate={parseDate}
-                        placeholder={`${formatDate(new Date())}`}
-                        />
-                      </div>
-                    </div>
+                    {item.name}
+                    {(this.state.displayCheckin === item.id) ? (<Checkin/>) : (<span/>)}
+                    {(this.state.displayCheckout === item.id) ? (<Checkout/>) : (<span/>)}                
                     {(item.lent_out) ? 
-                      (<InBtn onClick={() => this.displayCheckin(item.id)} title="Check-in this item" />)
+                      (<InBtn onClick={() => this.setState({displayCheckin: item.id})} title="Check-in this item" />)
                       :
-                      (<OutBtn onClick={() => this.displayCheckout(item.id)} title="Check-out this item" />)
+                      (<OutBtn onClick={() => this.setState({displayCheckout:item.id})} title="Check-out this item" />)
                     }                    
                   </ListItem>
                 ))}
