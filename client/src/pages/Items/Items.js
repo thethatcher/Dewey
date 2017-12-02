@@ -76,14 +76,6 @@ class Item extends Component {
       .catch(err => console.log(err));
   };
 
-  loadTransactions = () => {
-    API.getTransaction()
-      .then(res =>
-        this.setState({ Transaction: res.data, lent_date: "", due_date:"", returned_date:"", lent_condition:"", return_condition: ""})
-        )
-        .catch(err => console.log(err));
-  };
-
   handleSelectChange = (event)=> {
     const categoryId = parseInt(document.getElementById("categorySelect").value);
     console.log("The category ID is ",categoryId);
@@ -199,6 +191,7 @@ class Item extends Component {
                 {this.state.item.map(item => (
                   <ListItem key={item.id}>
                     {item.name}  
+                    {console.log("This is the item" ,item)}
                     {(this.state.displayCheckin === item.id) ? 
                       (
                         <div className="checkin">  
@@ -276,7 +269,12 @@ class Item extends Component {
                     : 
                       (<span/>)}            
                     {(item.lent_out) ? 
-                      (<InBtn onClick={() => this.setState({displayCheckin: item.id, activeItem: item.name})} title="Check-in this item" />)
+                      ( 
+                        <div>
+                          <span>Lent out to {item.Transactions[0].borrower}</span>
+                          <InBtn onClick={() => this.setState({displayCheckin: item.id, activeItem: item.name})} title="Check-in this item" />
+                        </div>
+                      )
                       :
                       (<OutBtn onClick={() => this.setState({displayCheckout:item.id, activeItem: item.name})} title="Check-out this item" />)
                     }       
